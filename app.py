@@ -47,7 +47,7 @@ def show_monster_challenge_rating(usrChallengeRating):
 
 
 @app.route("/api/v1.0/monsters", methods=["POST"])
-def add_business():
+def add_monster():
     if "name" in request.form:
         new_monster = {
             "index": reqest.form["name"].lower(),
