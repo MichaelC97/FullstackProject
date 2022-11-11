@@ -167,5 +167,3 @@ def edit_review(bid, rid):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
