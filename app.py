@@ -47,7 +47,7 @@ def show_monster_challenge_rating(usrChallengeRating):
 
 
 @app.route("/api/v1.0/monsters", methods=["POST"])
-def add_business():
+def add_monster():
     if "name" in request.form:
         new_monster = {
             "index": reqest.form["name"].lower(),
@@ -89,9 +89,9 @@ def add_business():
         return make_response( jsonify(
             {"error":"Missing form data"} ), 404)
 
-@app.route("/api/v1.0/businesses/<string:id>", methods=["PUT"])
-def edit_business(id):
-    if "name" in request.form and "town" in request.form and "rating" in request.form:
+@app.route("/api/v1.0/businesses/<string:name>", methods=["PUT"])
+def edit_monster(id):
+    if "name" in request.form:
         result = businesses.update_one( { "_id" : ObjectId(id) }, {
         "$set" : { "name" : request.form["name"],
         "town" : request.form["town"],
@@ -99,7 +99,7 @@ def edit_business(id):
         }
     } )
         if result.matched_count == 1:
-            edited_business_link = "http://localhost:5000/api/v1.0/businesses/" + id
+            edited_business_link = "http://localhost:5000/api/v1.0/monster/" + id
             return make_response( jsonify(
             { "url":edited_business_link } ), 200)
         else:
@@ -111,7 +111,7 @@ def edit_business(id):
 
 
 @app.route("/api/v1.0/businesses/<string:id>", methods=["DELETE"])
-def delete_business(id):
+def delete_(id):
  result = businesses.delete_one( { "_id" : ObjectId(id) } )
  if result.deleted_count == 1:
     return make_response( jsonify( {} ), 204)
