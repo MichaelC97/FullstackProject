@@ -14,10 +14,10 @@ export class MonsterComponent implements OnInit {
 
   async ngOnInit() {
     var response = await this.webService.getMonster();
-    console.log(response);
+    this.monster_list = response
     }
 
-  monster_list : any;
+    monster_list : any;
 
 
 }
