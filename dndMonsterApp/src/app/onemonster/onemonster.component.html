@@ -1,28 +1,25 @@
-<h1>Monstah Directory</h1>
-
-<h2>There are {{ monster_list.length }} monsters</h2>
-<h2>The first Monster is {{ monster_list[0].name }}</h2>
+<h1>Monster Directory</h1>
 
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <div *ngFor="let monsters of monster_list">
         <div
           class="card text-white bg-primary mb-3"
           style="width: 50rem; margin: auto"
-        >
+          [routerLink]="['/monster', monster.name]"
+          style="cursor: pointer">
+          
           <div class="card-header">
-            CR:{{monsters.challenge_rating}}&emsp;&emsp;
-            &emsp;&emsp;&emsp;Name:{{ monsters.name }}
+            CR:{{monster.challenge_rating}}&emsp;&emsp;
+            &emsp;&emsp;&emsp;Name:{{ monster.name }}
           </div>
           <div class="card-body">
-            {{ monsters.type }}
+            {{ monster.type }}
           </div>
           <div class="card-footer">
-            {{ monsters.alignment }}
+            {{ monster.alignment }}
           </div>
         </div>
-      </div>
     </div>
     <!-- col -->
   </div>
