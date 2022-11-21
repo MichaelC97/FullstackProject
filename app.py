@@ -12,7 +12,7 @@ dndMonsters = db.monsters # select the collection
 
 @app.route("/api/v1.0/allmonsters", methods=["GET"])
 def show_all_monsters():
-    page_num, page_size = 1, 10
+    page_num, page_size = 1, 20
     if request.args.get('pn'):
         page_num = int(request.args.get('pn'))
     if request.args.get('ps'):

@@ -7,7 +7,14 @@ import { MonsterComponent } from './monster/monster.component';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { OnemonsterComponent } from './onemonster/onemonster.component';
+import { MatListModule } from '@angular/material/list';  
+import {JitCompilerFactory} from '@angular/platform-browser-dynamic';
+import {Compiler, COMPILER_OPTIONS, CompilerFactory} from '@angular/core';
 
+
+export function createCompiler(compilerFactory: CompilerFactory) {
+  return compilerFactory.createCompiler();
+}
 
 var routes: any = [
   {
@@ -19,7 +26,7 @@ var routes: any = [
     component: MonsterComponent
     },
     {
-      path: 'monster/:name',
+      path: 'monsters/:name',
       component: OnemonsterComponent
     }
 ];
@@ -29,9 +36,15 @@ var routes: any = [
   imports: [
     BrowserModule, 
     HttpClientModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    MatListModule
   ],
-  providers: [WebService],
+  providers: [
+    {provide: COMPILER_OPTIONS, useValue: {}, multi: true},
+    {provide: CompilerFactory, useClass: JitCompilerFactory, deps: [COMPILER_OPTIONS]},
+    {provide: Compiler, useFactory: createCompiler, deps: [CompilerFactory]},
+    [WebService]
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
