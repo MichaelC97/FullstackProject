@@ -1,31 +1,28 @@
-<h1>Monstah Directory</h1>
+<h1>Dungeons and Dragons Monster Directory</h1>
 
-<h2>There are {{ monster_list.length }} monsters</h2>
-<h2>The first Monster is {{ monster_list[0].name }}</h2>
 
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <div *ngFor="let monsters of monster_list">
+      <div *ngFor= "let monsters of webService.monster_list">
+        <button type = "button" (click)="btnGetOneMonster(monsters.name)">
         <div
           class="card text-white bg-primary mb-3"
           style="width: 50rem; margin: auto"
         >
-          <div class="card-header">
-            CR:{{monsters.challenge_rating}}&emsp;&emsp;
-            &emsp;&emsp;&emsp;Name:{{ monsters.name }}
-          </div>
           <div class="card-body">
-            {{ monsters.type }}
+            <span class = "badge">{{monsters.challenge_rating}} </span>
+            <span class = "name">{{monsters.name}} </span>
+            <span class = "type"> {{ monsters.type }} </span>
+            <span class = "type"> {{ monsters.alignment }} </span>
           </div>
-          <div class="card-footer">
-            {{ monsters.alignment }}
+
           </div>
+          </button>
         </div>
       </div>
     </div>
     <!-- col -->
   </div>
   <!-- row -->
-</div>
 <!-- container -->

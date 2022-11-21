@@ -1,28 +1,23 @@
-<h1>Monster Directory</h1>
+<h1>Dungeons and Dragons Monster Directory</h1>
+
 
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
+      <div *ngFor= "let monsters of webService.findMonsterByName | keyvalue">
         <div
           class="card text-white bg-primary mb-3"
           style="width: 50rem; margin: auto"
-          [routerLink]="['/monster', monster.name]"
-          style="cursor: pointer">
-          
-          <div class="card-header">
-            CR:{{monster.challenge_rating}}&emsp;&emsp;
-            &emsp;&emsp;&emsp;Name:{{ monster.name }}
-          </div>
+        >
           <div class="card-body">
-            {{ monster.type }}
+            <span class = "badge">{{monsters.key}} </span>
+            <span class = "name">{{monsters.value}} </span>
           </div>
-          <div class="card-footer">
-            {{ monster.alignment }}
           </div>
         </div>
+      </div>
     </div>
     <!-- col -->
   </div>
   <!-- row -->
-</div>
 <!-- container -->
