@@ -35,6 +35,7 @@ var routes: any = [
   declarations: [AppComponent, MonsterComponent, HomeComponent, OnemonsterComponent],
   imports: [
     BrowserModule, 
+    MatListModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
     MatListModule
@@ -45,6 +46,7 @@ var routes: any = [
     {provide: Compiler, useFactory: createCompiler, deps: [CompilerFactory]},
     [WebService]
   ],
+  exports : [MatListModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
