@@ -1,28 +1,49 @@
-<h1>Dungeons and Dragons Monster Directory</h1>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />	
+	
+<h1 class = "heading" >Dungeons and Dragons Monster Directory</h1>
+<br>
+<br>
+<br>
 
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div *ngFor= "let monsters of webService.monster_list">
-        <button type = "button" (click)="btnGetOneMonster(monsters.name)">
-        <div
-          class="card text-white bg-primary mb-3"
-          style="width: 50rem; margin: auto"
-        >
-          <div class="card-body">
-            <span class = "badge">{{monsters.challenge_rating}} </span>
-            <span class = "name">{{monsters.name}} </span>
-            <span class = "type"> {{ monsters.type }} </span>
-            <span class = "type"> {{ monsters.alignment }} </span>
-          </div>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">Name</th>
+			<th scope="col">CR</th>
+			<th scope="col">Type</th>
+			<th scope="col">Alignment</th>
+			<th scope="col">Add</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor= "let monsters of webService.monster_list" [routerLink]="['/monsters/', monsters.name]" style="cursor: pointer">
+			<th scope="row">{{ monsters.name }}</th>
+			<td>
+				<!-- <img
+					[src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
+					class="me-2"
+					style="width: 20px"
+				/> -->
+				{{ monsters.challenge_rating }}
+			</td>
+			<td>{{ monsters.type}}</td>
+			<td>{{ monsters.alignment }}</td>
+			<td><button class="material-symbols-outlined">add_circle</button></td>
+		</tr>
+	</tbody>
+</table>
 
-          </div>
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- col -->
+<!-- col -->
+<div class="row">
+	<div class="col-sm-6">
+	  <button class="button-89" role="button" (click)="previousPage()">Previous</button>
+	</div>
+	<div class="col-sm-6 text-end">
+	  <button class="button-89" role="button" (click)="nextPage()">Next</button>
+	</div>
   </div>
-  <!-- row -->
+  
+
+<!-- row -->
 <!-- container -->

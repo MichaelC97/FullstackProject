@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WebService } from '../web.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-onemonster',
@@ -12,23 +12,24 @@ import { HttpClient } from '@angular/common/http';
 
 export class OnemonsterComponent implements OnInit {
 
-  monster_Name : any;
-  findMonsterByName : any;
+monsters_found : any;
+items: any;
 
-  constructor(public webService: WebService, private router: Router, public http: HttpClient, private route : ActivatedRoute) {}
+  constructor(public webService: WebService, private router: Router, public http: HttpClient, private route : ActivatedRoute, private location : Location) {}
 
   
   ngOnInit() {
+    this.webService.getOneMonster(this.route.snapshot.params['name'])
 
-    this.monster_Name = this.route.snapshot.paramMap.get('my_object');
-    var monsterFound = String(this.monster_Name)
-    console.log("monster name as String: " + monsterFound)
-    var monsterwoutQuotes = monsterFound.replace(/['"]+/g, '' )
-    console.log("monster name as String2: " + monsterwoutQuotes)
-    console.log("monster name: " + this.monster_Name)
-    this.webService.getOneMonster(monsterwoutQuotes)
+  };
 
-    };
+  btnBack() {
+    this.location.back();
+  }
+
+  btnAdd() {
+    
+  }
 
 }
 
