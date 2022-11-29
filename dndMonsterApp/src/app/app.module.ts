@@ -8,9 +8,12 @@ import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { OnemonsterComponent } from './onemonster/onemonster.component';
 import { MatListModule } from '@angular/material/list';  
+import {MatSidenavModule} from '@angular/material/sidenav'; 
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {JitCompilerFactory} from '@angular/platform-browser-dynamic';
 import {Compiler, COMPILER_OPTIONS, CompilerFactory} from '@angular/core';
-
+import {MatIconModule} from '@angular/material/icon'; 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function createCompiler(compilerFactory: CompilerFactory) {
   return compilerFactory.createCompiler();
@@ -35,9 +38,13 @@ var routes: any = [
   declarations: [AppComponent, MonsterComponent, HomeComponent, OnemonsterComponent],
   imports: [
     BrowserModule, 
+    MatIconModule,
+    BrowserAnimationsModule,
     MatListModule,
+    MatSidenavModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    MatPaginatorModule,
     MatListModule
   ],
   providers: [

@@ -25,6 +25,7 @@ body *{
   width: 75%;
   min-width: 560px;
   text-align: center;
+  margin-left: 250px;
 }
 .stat-block.wide .section-left,
 .stat-block.wide .section-right{
