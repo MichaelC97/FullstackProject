@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { WebService } from '../web.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';  
 
 @Component({
@@ -13,8 +14,10 @@ export class MonsterComponent implements OnInit {
   applyFilter($event: KeyboardEvent) {
     throw new Error('Method not implemented.');
   }
+  showFiller = false;
   monster_list: any;
   page: number = 1;
+  
   constructor(
     public webService: WebService,
     private router: Router,

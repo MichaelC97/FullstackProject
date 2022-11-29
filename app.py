@@ -7,8 +7,9 @@ app = Flask(__name__)
 CORS(app)
 
 client = MongoClient("mongodb://127.0.0.1:27017")
-db = client.dndMonsters # select the database
-dndMonsters = db.monsters # select the collection
+db = client.dndMonsters  # select the database
+dndMonsters = db.monsters  # select the collection
+
 
 @app.route("/api/v1.0/allmonsters", methods=["GET"])
 def show_all_monsters():
@@ -22,30 +23,41 @@ def show_all_monsters():
     for monster in dndMonsters.find().skip(page_start).limit(page_size):
         monster['_id'] = str(monster['_id'])
         data_to_return.append(monster)
-    
-    return make_response( jsonify(data_to_return), 200 )
+
+    return make_response(jsonify(data_to_return), 200)
+
 
 @app.route("/api/v1.0/monsters/<string:name>", methods=["GET"])
 def show_one_monster(name):
-    monster = dndMonsters.find_one( {"name": name} )
-    if monster is not None: 
+    monster = dndMonsters.find_one({"name": name})
+    if monster is not None:
         monster["_id"] = str(monster["name"])
-        print
-        return make_response( jsonify( monster ), 200)
+        return make_response(jsonify(monster), 200)
     else:
-        return make_response( jsonify( {"error" : "Invalid Monster ID"} ), 404)
+        return make_response(jsonify({"error": "Invalid Monster ID"}), 404)
 
-#Search for monster via CR
+# Search for monster via CR
+
+
 @app.route("/api/v1.0/monsterscr/<string:usrChallengeRating>", methods=["GET"])
 def show_monster_challenge_rating(usrChallengeRating):
-
     data_to_return = []
     intCr = int(usrChallengeRating)
-    for monster in dndMonsters.find({"challenge_rating": intCr}, {"_id" : 1, "name": 1, "challenge_rating": 1}):
-
+    for monster in dndMonsters.find({"challenge_rating": intCr}, {"_id": 1, "name": 1, "challenge_rating": 1}):
         data_to_return.append(monster)
-    
-    return make_response( jsonify(data_to_return), 200 )
+    return make_response(jsonify(data_to_return), 200)
+
+
+@app.route("/api/v1.0/monsters/<string:name>/actions", methods=["GET"])
+def fetch_all_actions(name):
+    data_to_return = []
+    monsters = dndMonsters.find_one({"name" : name}, {"actions" : 1 })
+    if monsters is not None:
+        monsters["name"] = str(monsters["actions"]["name"])
+        monsters["desc"] = str(monsters["actions"]["desc"])
+        data_to_return.append(monsters)
+        print(data_to_return)
+    return make_response( jsonify(data_to_return ), 200 )
 
 
 @app.route("/api/v1.0/monsters", methods=["POST"])
@@ -53,119 +65,126 @@ def add_monster():
     if "name" in request.form:
         new_monster = {
             "index": reqest.form["name"].lower(),
-            "name" : request.form["name"],
-            "size" : request.form["size"],
-            "type" : request.form["type"],
-            "subtype" : request.form["subtype"],
-            "alignment" : request.form["alignment"],
-            "armor_class" : request.form["armor_class"],
-            "hit_points" : request.form["hit_points"],
-            "hit_dice" : request.form["hit_dice"],
-            "speed" : request.form["speed"],
+            "name": request.form["name"],
+            "size": request.form["size"],
+            "type": request.form["type"],
+            "subtype": request.form["subtype"],
+            "alignment": request.form["alignment"],
+            "armor_class": request.form["armor_class"],
+            "hit_points": request.form["hit_points"],
+            "hit_dice": request.form["hit_dice"],
+            "speed": request.form["speed"],
 
-            "strength" : request.form["strength"],
-            "dexterity" : request.form["dexterity"],
-            "constitution" : request.form["constitution"],
-            "intelligence" : request.form["intelligence"],
-            "wisdom" : request.form["wisdom"],
-            "charisma" : request.form["charisma"],
-            "proficiencies" : [],
+            "strength": request.form["strength"],
+            "dexterity": request.form["dexterity"],
+            "constitution": request.form["constitution"],
+            "intelligence": request.form["intelligence"],
+            "wisdom": request.form["wisdom"],
+            "charisma": request.form["charisma"],
+            "proficiencies": [],
 
-            "damage_vinerabilities" : [],
-            "damage_resistances" : [],
-            "damage_immunities" : [],
-            "condition_immunities" : [],
-            "senses" : [],
-            "languages" : request.form["languages"],
-            "challenge_rating" : request.form["challenge_rating"],
+            "damage_vinerabilities": [],
+            "damage_resistances": [],
+            "damage_immunities": [],
+            "condition_immunities": [],
+            "senses": [],
+            "languages": request.form["languages"],
+            "challenge_rating": request.form["challenge_rating"],
 
-            "special_abilities" : [],
-            "actions" : [],
-            "legendary_actions" : []
+            "special_abilities": [],
+            "actions": [],
+            "legendary_actions": []
         }
         new_monster_id = monster.insert_one(new_monster)
-        new_monster_link = "http://localhost:5000/api/v1.0/monster/" + str(new_monster_id.inserted_id)
-        return make_response( jsonify(
-            {"url": new_monster_link} ), 201)
+        new_monster_link = "http://localhost:5000/api/v1.0/monster/" + \
+            str(new_monster_id.inserted_id)
+        return make_response(jsonify(
+            {"url": new_monster_link}), 201)
     else:
-        return make_response( jsonify(
-            {"error":"Missing form data"} ), 404)
+        return make_response(jsonify(
+            {"error": "Missing form data"}), 404)
+
 
 @app.route("/api/v1.0/businesses/<string:name>", methods=["PUT"])
 def edit_monster(id):
     if "name" in request.form:
-        result = businesses.update_one( { "_id" : ObjectId(id) }, {
-        "$set" : { "name" : request.form["name"],
-        "town" : request.form["town"],
-        "rating" : request.form["rating"]
-        }
-    } )
+        result = businesses.update_one({"_id": ObjectId(id)}, {
+            "$set": {"name": request.form["name"],
+                     "town": request.form["town"],
+                     "rating": request.form["rating"]
+                     }
+        })
         if result.matched_count == 1:
             edited_business_link = "http://localhost:5000/api/v1.0/monster/" + id
-            return make_response( jsonify(
-            { "url":edited_business_link } ), 200)
+            return make_response(jsonify(
+                {"url": edited_business_link}), 200)
         else:
-            return make_response( jsonify(
-            { "error":"Invalid business ID" } ), 404)
+            return make_response(jsonify(
+                {"error": "Invalid business ID"}), 404)
     else:
-        return make_response( jsonify(
-        { "error" : "Missing form data" } ), 404)
+        return make_response(jsonify(
+            {"error": "Missing form data"}), 404)
 
 
 @app.route("/api/v1.0/businesses/<string:id>", methods=["DELETE"])
 def delete_(id):
- result = businesses.delete_one( { "_id" : ObjectId(id) } )
- if result.deleted_count == 1:
-    return make_response( jsonify( {} ), 204)
- else:
-    return make_response( jsonify( \
-        { "error" : "Invalid business ID" } ), 404)
+    result = businesses.delete_one({"_id": ObjectId(id)})
+    if result.deleted_count == 1:
+        return make_response(jsonify({}), 204)
+    else:
+        return make_response(jsonify(
+            {"error": "Invalid business ID"}), 404)
+
 
 @app.route("/api/v1.0/businesses/<string:id>/reviews", methods=["POST"])
 def add_new_review(id):
     new_review = {
-        "_id" : ObjectId(),
-        "username" : request.form["username"],
-        "comment" : request.form["comment"],
-        "stars" : request.form["stars"]
+        "_id": ObjectId(),
+        "username": request.form["username"],
+        "comment": request.form["comment"],
+        "stars": request.form["stars"]
     }
-    businesses.update_one( { "_id" : ObjectId(id) }, { "$push": { "reviews" : new_review } } )
-    new_review_link ="http://localhost:5000/api/v1.0/businesses/" + id +"/reviews/" + str(new_review['_id'])
-    return make_response( jsonify( \
-        { "url" : new_review_link } ), 201 )
+    businesses.update_one({"_id": ObjectId(id)}, {
+                          "$push": {"reviews": new_review}})
+    new_review_link = "http://localhost:5000/api/v1.0/businesses/" + \
+        id + "/reviews/" + str(new_review['_id'])
+    return make_response(jsonify(
+        {"url": new_review_link}), 201)
 
 
 @app.route("/api/v1.0/businesses/<bid>/reviews/<rid>", methods=["GET"])
 def fetch_one_review(bid, rid):
-    business = businesses.find_one( \
-        { "reviews._id" : ObjectId(rid) }, \
-        { "_id" : 0, "reviews.$" : 1 } )
+    business = businesses.find_one(
+        {"reviews._id": ObjectId(rid)},
+        {"_id": 0, "reviews.$": 1})
     if business is None:
-        return make_response( \
-        jsonify( \
-        {"error":"Invalid business ID or review ID"}),404)
+        return make_response(
+            jsonify(
+                {"error": "Invalid business ID or review ID"}), 404)
     business['reviews'][0]['_id'] = \
         str(business['reviews'][0]['_id'])
 
-    return make_response( jsonify( \
+    return make_response(jsonify(
         business['reviews'][0]), 200)
 
-@app.route("/api/v1.0/businesses/<bid>/reviews/<rid>", \
- methods=["PUT"])
+
+@app.route("/api/v1.0/businesses/<bid>/reviews/<rid>",
+           methods=["PUT"])
 def edit_review(bid, rid):
     edited_review = {
-        "reviews.$.username" : request.form["username"],
-        "reviews.$.comment" : request.form["comment"],
-        "reviews.$.stars" : request.form['stars']
+        "reviews.$.username": request.form["username"],
+        "reviews.$.comment": request.form["comment"],
+        "reviews.$.stars": request.form['stars']
     }
-    businesses.update_one( \
-        { "reviews._id" : ObjectId(rid) }, \
-        { "$set" : edited_review } )
+    businesses.update_one(
+        {"reviews._id": ObjectId(rid)},
+        {"$set": edited_review})
     edit_review_url = \
         "http://localhost:5000/api/v1.0/businesses/" + \
         bid + "/reviews/" + rid
-    return make_response( jsonify( \
-        {"url":edit_review_url} ), 200)
+    return make_response(jsonify(
+        {"url": edit_review_url}), 200)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
