@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';  
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-monster',
@@ -21,7 +22,8 @@ export class MonsterComponent implements OnInit {
   constructor(
     public webService: WebService,
     private router: Router,
-    public http: HttpClient
+    public http: HttpClient,
+    public authService: AuthService
   ) {}
 
   ngOnInit() {
