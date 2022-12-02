@@ -23,7 +23,7 @@
     <div class="container">
       <table class="table table-striped">
         <thead>
-          <tr>
+          <tr class = "titles">
             <th scope="col">Name</th>
             <th scope="col">CR</th>
             <th scope="col">Type</th>
@@ -46,7 +46,11 @@
             <td>{{ monsters.alignment }}</td>
             <td>{{ monsters.source }}</td>
             <td>
-              <button class="material-symbols-outlined">add_circle</button>
+              <button *ngIf = "authService.isAuthenticated$ | async;
+              else loggedOut"class="material-symbols-outlined">add_circle</button>
+              <ng-template #loggedOut>
+
+              </ng-template>
             </td>
           </tr>
         </tbody>

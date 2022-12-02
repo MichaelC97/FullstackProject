@@ -2,14 +2,36 @@ from flask import Flask, request, jsonify, make_response
 from pymongo import MongoClient
 from flask_cors import CORS
 from bson import ObjectId
+from flask_cors import CORS
+
 
 app = Flask(__name__)
 CORS(app)
 
+
 client = MongoClient("mongodb://127.0.0.1:27017")
 db = client.dndMonsters  # select the database
 dndMonsters = db.monsters  # select the collection
+dndUsers = db.users
+blacklist = db.blacklist
 
+
+
+def login():
+    auth = request.authorization
+    if auth:
+        user = staff.find_one( {'username':auth.username } )
+        if user is not None:
+            if bcrypt.checkpw(bytes(auth.password, 'UTF-8'), user["password"]):
+                token = jwt.encode({'user' : auth.username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+                    }, app.config['SECRET_KEY'])
+                return make_response(jsonify({'token':token.decode('UTF-8')}), 200)
+            else:
+                return make_response(jsonify({'message':'Bad password'}), 401)
+        else:
+            return make_response(jsonify({'message':'Bad username'}), 401)
+    return make_response(jsonify(\
+    {'message':'Authentication required'}), 401)
 
 @app.route("/api/v1.0/allmonsters", methods=["GET"])
 def show_all_monsters():
