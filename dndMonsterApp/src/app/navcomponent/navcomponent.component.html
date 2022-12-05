@@ -10,23 +10,24 @@
       <li class="nav-item active">
         <a class="nav-link" routerLink="/">Home <span class="sr-only"></span></a>
       </li>
-      <li class="nav-item" style = "width: 50%;">
+      <li class="nav-item" style = "width: 100%;">
         <a class="nav-link" routerLink="/monsters">Show Monster</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
+      <div>
+        <ng-container *ngIf="authService.isAuthenticated$ | async;
+        else noUsr">
+        <li class="nav-item" style = "width: 100%;">
+          <a class="nav-link" routerLink="/settings">Show User</a>
+        </li>
+        </ng-container>
+        <ng-template #noUsr>
+          <li class="nav-item" style = "width: 0%; text-align: center;">
+          </li>
+        </ng-template>
+      </div>
     </ul>
     <br>
-    <li class="nav-item" style = "float: right; width: 80%;">
+    <li class="nav-item" style = "float: right; width: 100%; padding-right: 75px;">
       <div>
         <ng-container *ngIf="authService.isAuthenticated$ | async;
         else loggedOut">
