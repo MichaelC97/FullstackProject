@@ -2,16 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.css']
 })
-export class HomeComponent implements OnInit {
+export class SettingsComponent implements OnInit {
 
   constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
-
   }
 
 }

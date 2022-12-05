@@ -1,7 +1,5 @@
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
-/>
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
 <div class="overview">
   <!-- <div>
@@ -18,12 +16,15 @@
 
     <br />
     <br />
+    <div class="search-hero" style = "width: 50%; margin: auto;">
+      <input class="form-control" type="text" name="search" autocomplete="off" [(ngModel)]="searchText" placeholder="&#61442;  Search Monster">
+    </div>
     <br />
-
+    <br />
     <div class="container">
       <table class="table table-striped">
         <thead>
-          <tr class = "titles">
+          <tr class="titles">
             <th scope="col">Name</th>
             <th scope="col">CR</th>
             <th scope="col">Type</th>
@@ -33,11 +34,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let monsters of webService.monster_list"
-            [routerLink]="['/monsters/', monsters.name]"
-            style="cursor: pointer"
-          >
+          <tr *ngFor="let monsters of webService.monster_list | filter:searchText" [routerLink]="['/monsters/', monsters.name]"
+            style="cursor: pointer">
             <th scope="row">{{ monsters.name }}</th>
             <td>
               {{ monsters.challenge_rating }}
@@ -46,8 +44,8 @@
             <td>{{ monsters.alignment }}</td>
             <td>{{ monsters.source }}</td>
             <td>
-              <button *ngIf = "authService.isAuthenticated$ | async;
-              else loggedOut"class="material-symbols-outlined">add_circle</button>
+              <button *ngIf="authService.user$ | async as user
+              else loggedOut" class="material-symbols-outlined">add_circle</button>
               <ng-template #loggedOut>
 
               </ng-template>

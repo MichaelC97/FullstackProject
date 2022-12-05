@@ -6,12 +6,14 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';  
 import { AuthService } from '@auth0/auth0-angular';
 
+
 @Component({
   selector: 'app-monster',
   templateUrl: './monster.component.html',
   styleUrls: ['./monster.component.css'],
 })
 export class MonsterComponent implements OnInit {
+searchText: any;
   applyFilter($event: KeyboardEvent) {
     throw new Error('Method not implemented.');
   }

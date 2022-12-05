@@ -7,6 +7,7 @@ import { MonsterComponent } from './monster/monster.component';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { OnemonsterComponent } from './onemonster/onemonster.component';
+import { FormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { MatListModule } from '@angular/material/list';  
 import {MatSidenavModule} from '@angular/material/sidenav'; 
@@ -16,7 +17,8 @@ import {Compiler, COMPILER_OPTIONS, CompilerFactory} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavcomponentComponent } from './navcomponent/navcomponent.component';
-
+import { SettingsComponent } from './settings/settings.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 export function createCompiler(compilerFactory: CompilerFactory) {
   return compilerFactory.createCompiler();
@@ -34,16 +36,22 @@ var routes: any = [
     {
       path: 'monsters/:name',
       component: OnemonsterComponent
+    },
+    {
+      path: 'settings',
+      component: SettingsComponent
     }
 ];
 
 @NgModule({
-  declarations: [AppComponent, MonsterComponent, HomeComponent, OnemonsterComponent, NavcomponentComponent],
+  declarations: [AppComponent, MonsterComponent, HomeComponent, OnemonsterComponent, NavcomponentComponent, SettingsComponent],
   imports: [
     BrowserModule, 
     MatIconModule,
     BrowserAnimationsModule,
     MatListModule,
+    Ng2SearchPipeModule,
+    FormsModule,
     MatSidenavModule,
     HttpClientModule,
     AuthModule.forRoot({
