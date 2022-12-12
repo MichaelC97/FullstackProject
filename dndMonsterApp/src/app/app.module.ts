@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav'; 
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {JitCompilerFactory} from '@angular/platform-browser-dynamic';
+import { ReactiveFormsModule } from '@angular/forms';
 import {Compiler, COMPILER_OPTIONS, CompilerFactory} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,7 +44,7 @@ var routes: any = [
       component: SettingsComponent
     },
     {
-      path: 'monster/edit',
+      path: 'monster/create',
       component: CreatemonsterComponent
     }
 ];
@@ -59,6 +60,7 @@ var routes: any = [
     FormsModule,
     MatSidenavModule,
     HttpClientModule,
+    ReactiveFormsModule,
     AuthModule.forRoot({
       domain: 'fullstackdevmc.uk.auth0.com',
       clientId: 'VGeVxAOdbT1yJy7hvQNuMfJ217kPlkjo'
