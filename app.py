@@ -82,7 +82,7 @@ def fetch_all_actions(name):
     return make_response( jsonify(data_to_return ), 200 )
 
 
-@app.route("/api/v1.0/monsters", methods=["POST"])
+@app.route("/api/v1.0/monsters/create", methods=["POST"])
 def add_monster():
     if "name" in request.form:
         new_monster = {
@@ -103,23 +103,33 @@ def add_monster():
             "intelligence": request.form["intelligence"],
             "wisdom": request.form["wisdom"],
             "charisma": request.form["charisma"],
-            "proficiencies": [],
 
-            "damage_vinerabilities": [],
-            "damage_resistances": [],
-            "damage_immunities": [],
-            "condition_immunities": [],
-            "senses": [],
+            "damage_vunerabilities": request.form["damage_vinerabilities"],
+            "damage_resistances": request.form["damage_resistances"],
+            "damage_immunities": request.form["damage_immunities"],
+            "condition_immunities": request.form["condition_immunities"],
+
+            "Passive_Perception": request.form["Passive_Perception"],
+            "DarkVison": request.form["DarkVison"],
+            "Truesight": request.form["Truesight"],
+            "Tremorsense": request.form["Tremorsense"],
+            "Blindsight": request.form["Blindsight"],
             "languages": request.form["languages"],
             "challenge_rating": request.form["challenge_rating"],
 
-            "special_abilities": [],
-            "actions": [],
-            "legendary_actions": []
+            "special_abilities_name": request.form["special_abilities_name"],
+            "special_abilities_desc": request.form["special_abilities_desc"],
+
+            "actions_name": request.form["actions_name"],
+            "actions_desc": request.form["actions_desc"],
+
+            "legendary_actions": [{"name": request.form["legendary_actions_name"], "name" : request.form["legendary_actions_name2"], "name": request.form["legendary_actions_name3"],
+                                    "desc": request.form["legendary_actions_desc"], "desc": request.form["legendary_actions_desc2"], "desc": request.form["legendary_actions_desc3"]}]
         }
+
         new_monster_id = monster.insert_one(new_monster)
         new_monster_link = "http://localhost:5000/api/v1.0/monster/" + \
-            str(new_monster_id.inserted_id)
+            str(new_monster_id.inserted_name)
         return make_response(jsonify(
             {"url": new_monster_link}), 201)
     else:
