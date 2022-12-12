@@ -19,11 +19,12 @@
     <hr class="orange-border" />
     <div class="section-left">
       <div class="creature-heading">
-        <h1>{{ webService.monsters_found.name }}</h1>
+        <h1><input type="text" id="monName" name="monName" placeholder="Name"><br></h1>
         <h2>
-          {{ webService.monsters_found.size }}
-          {{ webService.monsters_found.type }},
-          {{ webService.monsters_found.alignment }}
+          <input type="text" id="monSize" name="monSize" placeholder="Size">
+          <input type="text" id="monType" name="monType" placeholder="Type">
+          <input type="text" id="monAli" name="monAli" placeholder="Alignment">
+          <input type="text" id="monCR" name="monCR" placeholder="Challenge Rating">
         </h2>
       </div>
       <!-- creature heading -->
@@ -33,22 +34,22 @@
       <div class="top-stats">
         <div class="property-line first">
           <h4>Armor Class:</h4>
-          <p>{{ webService.monsters_found.armor_class }}</p>
+          <p><input type="text" id="monAC" name="monAC" placeholder="Armor Class"></p>
         </div>
         <!-- property line -->
         <div class="property-line">
           <h4>Hit Points:</h4>
-          <p>{{ webService.monsters_found.hit_points }}</p>
+          <p><input type="text" id="monHP" name="monHP" placeholder="Hit Points"></p>
         </div>
         <!-- property line -->
         <div class="property-line last">
-          <h4>Speed:</h4>
+          <h4>Speed: <br></h4>
           <p>
-            Walking: {{ webService.monsters_found.speed.walk }}ft, Swim:
-            {{ webService.monsters_found.speed.swim }}ft, Fly:
-            {{ webService.monsters_found.speed.fly }}ft, Climb:
-            {{ webService.monsters_found.speed.climb }}ft, Burrow:
-            {{ webService.monsters_found.speed.burrow }}ft,
+            Walking: <input type="text" id="monWalk" name="monWalk" placeholder="Walking Speed">ft, <br>
+            Swim: <input type="text" id="monSwim" name="monSwim" placeholder="Swimming Speed">ft, <br>
+            Fly: <input type="text" id="monFly" name="monFly" placeholder="Flying Speed">ft, <br>
+            Climb: <input type="text" id="monClimb" name="monClimb" placeholder="Climbing Speed">ft, <br>
+            Burrow:  <input type="text" id="monBurr" name="monBurr" placeholder="Burrow Speed">ft,<br>
           </p>
         </div>
         <!-- property line -->
@@ -58,32 +59,32 @@
         <div class="abilities">
           <div class="ability-strength">
             <h4>STR</h4>
-            <p>{{ webService.monsters_found.strength }}</p>
+            <p><input type="text" id="monStr" name="monStr" placeholder="Strength"></p>
           </div>
           <!-- ability strength -->
           <div class="ability-dexterity">
             <h4>DEX</h4>
-            <p>{{ webService.monsters_found.dexterity }}</p>
+            <p><input type="text" id="monDex" name="monDex" placeholder="Dexterity"></p>
           </div>
           <!-- ability dexterity -->
           <div class="ability-constitution">
             <h4>CON</h4>
-            <p>{{ webService.monsters_found.constitution }}</p>
+            <p><input type="text" id="monCon" name="monCon" placeholder="Constitution"></p>
           </div>
           <!-- ability constitution -->
           <div class="ability-intelligence">
             <h4>INT</h4>
-            <p>{{ webService.monsters_found.intelligence }}</p>
+            <p><input type="text" id="monInt" name="monInt" placeholder="Intelligence"></p>
           </div>
           <!-- ability intelligence -->
           <div class="ability-wisdom">
             <h4>WIS</h4>
-            <p>{{ webService.monsters_found.wisdom }}</p>
+            <p><input type="text" id="monWis" name="monWis" placeholder="Wisdom"></p>
           </div>
           <!-- ability wisdom -->
           <div class="ability-charisma">
             <h4>CHA</h4>
-            <p>{{ webService.monsters_found.charisma }}</p>
+            <p><input type="text" id="monCha" name="monCha" placeholder="Charisma"></p>
           </div>
           <!-- ability charisma -->
         </div>
@@ -93,38 +94,39 @@
         </svg>
         <div class="property-line first">
           <h4>Damage Immunities:</h4>
-          <p>{{ webService.monsters_found.damage_immunities }}</p>
+          <p><input type="text" id="monDam" name="monDamIm" placeholder="Damage Immunities"></p>
         </div>
         <!-- property line -->
         <div class="property-line">
           <h4>Condition Immunities:</h4>
-          <p>{{ webService.monsters_found.condition_immunities }}</p>
+          <p><input type="text" id="monConIm" name="monConIm" placeholder="Condition Immunities"></p>
         </div>
         <!-- property line -->
         <div class="property-line">
-          <h4>Senses:</h4>
+          <h4>Senses:</h4><br>
           <p>
             Passive Perception:
-            {{ webService.monsters_found.senses.passive_perception }} |
+            <input type="text" id="monPassP" name="monPassP" placeholder="Passive Perception"> |<br>
           </p>
           <p>
-            DarkVison: {{ webService.monsters_found.senses.darkvision }}ft |
+            DarkVison: <input type="text" id="monDarkV" name="monDarkV" placeholder="DarkVison">ft |<br>
           </p>
-          <p>Truesight: {{ webService.monsters_found.senses.truesight }}ft |</p>
+          <p>Truesight: <input type="text" id="monTrueS" name="monTrueS" placeholder="Truesight">ft |</p><br>
           <p>
-            Tremorsense: {{ webService.monsters_found.senses.tremorsense }}ft |
+            Tremorsense: <input type="text" id="monTremS" name="monTremS" placeholder="Tremorsense">ft |<br>
           </p>
-          <p>Blindsight: {{ webService.monsters_found.senses.blindsight }}ft</p>
+          <p>Blindsight: <input type="text" id="monBlindS" name="monBlindS" placeholder="Blindsight">ft</p><br>
         </div>
+        <br>
         <!-- property line -->
         <div class="property-line">
           <h4>Languages:</h4>
-          <p>{{ webService.monsters_found.languages }}</p>
+          <p><input type="text" id="monLang" name="monLang" placeholder="Languages"></p>
         </div>
         <!-- property line -->
         <div class="property-line last">
           <h4>Challenge:</h4>
-          <p>{{ webService.monsters_found.challenge_rating }}</p>
+          <p><input type="text" id="monChal" name="monChal" placeholder="Challenge"></p>
         </div>
         <!-- property line -->
       </div>
@@ -136,8 +138,8 @@
       <div class="actions">
         <h3>Special Actions</h3>
         <div class="property-block">
-          <h4>{{ webService.monsters_found.specialAbilities.name }}:</h4>
-          <p>{{ webService.monsters_found.specialAbilities.description }}</p>
+          <h4><input type="text" id="monSpecName" name="monSpecName" placeholder="Special Abilities Name">:</h4>
+          <p><input type="text" id="monSpecDesc" name="monSpecDesc" placeholder="Description"></p>
         </div>
         <!-- property block -->
         <!-- property block -->
@@ -146,12 +148,11 @@
     </div>
     <!-- section left -->
     <div class="section-right">
-      <button id = "editbtn">Edit</button>
       <div class="actions">
         <h3>Actions</h3>
         <div class="property-block">
-          <h4>{{ webService.monsters_found.actions.name }}:</h4>
-          <p>{{ webService.monsters_found.actions.desc }}</p>
+          <h4><input type="text" id="monActName" name="monActName" placeholder="Action Name">:</h4>
+          <p><input type="text" id="monActDesc" name="monActDesc" placeholder="Description"></p>
         </div>
         <!-- property block -->
       </div>
@@ -159,16 +160,16 @@
       <div class="actions">
         <h3>Legendary Actions</h3>
         <div class="property-block">
-          <h4>{{ webService.monsters_found.legendaryActions.name[0] }}</h4>
-          <p>{{ webService.monsters_found.legendaryActions.description[0] }}</p>
+          <h4><input type="text" id="MonLegA" name="MonLegA" placeholder="Legendary Actions"></h4>
+          <p><input type="text" id="MonLegADesc" name="MonLegADesc" placeholder="Description"></p>
           <br />
           <br />
-          <h4>{{ webService.monsters_found.legendaryActions.name[1] }}</h4>
-          <p>{{ webService.monsters_found.legendaryActions.description[1] }}</p>
+          <h4><input type="text" id="MonLegA2" name="MonLegA2" placeholder="Legendary Actions"></h4>
+          <p><input type="text" id="MonLegADesc2" name="MonLegADesc2" placeholder="Description"></p>
           <br />
           <br />
-          <h4>{{ webService.monsters_found.legendaryActions.name[2] }}</h4>
-          <p>{{ webService.monsters_found.legendaryActions.description[2] }}</p>
+          <h4><input type="text" id="MonLegA3" name="monConIm" placeholder="Legendary Actions"></h4>
+          <p><input type="text" id="MonLegADesc3" name="MonLegADesc3" placeholder="Description"></p>
         </div>
         <!-- property block -->
         <!-- property block -->
@@ -182,10 +183,10 @@
   <!-- col -->
   <div class="row">
     <div class="col-sm-6">
-      <button class="button-89" role="button" (click)="btnBack()">Back</button>
+      <button class="button-89" role="button" routerLink ="['/monsters/']" > Back </button>
     </div>
     <div class="col-sm-6 text-end">
-      <button class="button-89" role="button" (click)="btnBack()">Add</button>
+      <button class="button-89" role="button">Add</button>
     </div>
   </div>
 </div>

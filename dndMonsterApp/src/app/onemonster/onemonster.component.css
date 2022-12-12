@@ -22,10 +22,9 @@ body *{
   box-shadow: 0 0 1.5em #867453;
 }
 .stat-block.wide{
-  width: 75%;
+  width: 100%;
   min-width: 560px;
   text-align: center;
-  margin-left: 250px;
 }
 .stat-block.wide .section-left,
 .stat-block.wide .section-right{
@@ -190,7 +189,7 @@ body *{
 	  margin: 0;
 	}
 	.stat-block{
-		width: 40%;
+		width: 50%;
 		display: inline-block;
 		vertical-align: top;
 	}
@@ -208,7 +207,7 @@ body *{
   --b: 3px;   /* border thickness */
   --s: .45em; /* size of the corner */
   --color: #373B44;
-  margin-left: 500px;
+  margin-left: 300px;
   margin-right: 500px;
   padding: calc(.5em + var(--s)) calc(.9em + var(--s));
   color: var(--color);
@@ -226,6 +225,9 @@ body *{
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+}
+.editbtn{
+  margin-left: 100%;
 }
 
 .button-89:hover,
