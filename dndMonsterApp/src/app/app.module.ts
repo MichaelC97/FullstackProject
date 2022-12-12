@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavcomponentComponent } from './navcomponent/navcomponent.component';
 import { SettingsComponent } from './settings/settings.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { CreatemonsterComponent } from './createmonster/createmonster.component';
 
 export function createCompiler(compilerFactory: CompilerFactory) {
   return compilerFactory.createCompiler();
@@ -40,11 +41,15 @@ var routes: any = [
     {
       path: 'settings',
       component: SettingsComponent
+    },
+    {
+      path: 'monster/edit',
+      component: CreatemonsterComponent
     }
 ];
 
 @NgModule({
-  declarations: [AppComponent, MonsterComponent, HomeComponent, OnemonsterComponent, NavcomponentComponent, SettingsComponent],
+  declarations: [AppComponent, MonsterComponent, HomeComponent, OnemonsterComponent, NavcomponentComponent, SettingsComponent, CreatemonsterComponent],
   imports: [
     BrowserModule, 
     MatIconModule,

@@ -13,11 +13,11 @@
   <mat-drawer-container class="mat-container">
     <mat-drawer #drawer class="mat-sidenav" mode="side">
     </mat-drawer>
-
     <br />
     <br />
-    <div class="search-hero" style = "width: 50%; margin: auto;">
+    <div class="search-hero" style = "width: 50%; margin: auto; display: inline-block;">
       <input class="form-control" type="text" name="search" autocomplete="off" [(ngModel)]="searchText" placeholder="&#61442;  Search Monster">
+      <button [routerLink]="['/monster/edit']">Create Monster</button>
     </div>
     <br />
     <br />
