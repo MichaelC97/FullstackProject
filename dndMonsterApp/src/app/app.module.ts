@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav'; 
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {JitCompilerFactory} from '@angular/platform-browser-dynamic';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
 import {Compiler, COMPILER_OPTIONS, CompilerFactory} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon'; 
@@ -21,6 +22,7 @@ import { NavcomponentComponent } from './navcomponent/navcomponent.component';
 import { SettingsComponent } from './settings/settings.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { CreatemonsterComponent } from './createmonster/createmonster.component';
+import { EditMonsterComponent } from './edit-monster/edit-monster.component';
 
 export function createCompiler(compilerFactory: CompilerFactory) {
   return compilerFactory.createCompiler();
@@ -40,6 +42,10 @@ var routes: any = [
       component: OnemonsterComponent
     },
     {
+      path: 'monsters/:name/edit',
+      component: EditMonsterComponent 
+    },
+    {
       path: 'settings',
       component: SettingsComponent
     },
@@ -50,11 +56,12 @@ var routes: any = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, MonsterComponent, HomeComponent, OnemonsterComponent, NavcomponentComponent, SettingsComponent, CreatemonsterComponent],
+  declarations: [AppComponent, MonsterComponent, HomeComponent, OnemonsterComponent, NavcomponentComponent, SettingsComponent, CreatemonsterComponent, EditMonsterComponent],
   imports: [
     BrowserModule, 
     MatIconModule,
     BrowserAnimationsModule,
+    NgxPaginationModule,
     MatListModule,
     Ng2SearchPipeModule,
     FormsModule,

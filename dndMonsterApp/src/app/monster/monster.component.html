@@ -1,22 +1,48 @@
 <link rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <div class="overview">
-  <!-- <div>
-    <h1 class="heading"></h1>
-    <div class="mat-sidenav-content">
-      <button type="button" mat-button (click)="drawer.toggle()">
-        Show encounter
-      </button>
-    </div>
-  </div> -->
-  <mat-drawer-container class="mat-container">
+
+  <div>
+    <button *ngIf="authService.user$ | async as user"  type="button" class = "mat-button" (click)="drawer.toggle()"
+    (click)="showAllEncounters(user.email)">
+    </button>
+  </div>
+  <mat-drawer-container class="mat-container" >
     <mat-drawer #drawer class="mat-sidenav" mode="side">
+      <div class="mat-sidenav-content">
+        <br>
+        <br>
+        <div class="container">
+          <table class="table table-striped" >
+            <thead>
+              <tr class="titles">
+                <th scope="col">Name</th>
+                <th scope="col">CR</th>
+                <th scope="col">Source</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let encounter of webService.encounter_list">
+              <tr style="cursor: pointer">
+                <th scope="row">{{ encounter.name}}</th>
+                <td>
+                  {{  encounter.challenge_rating  }}
+                </td>
+                <td>{{ encounter.source }}</td>
+                <td><span  *ngIf="authService.user$ | async as user" class="material-symbols-outlined" type = "submit" (click)="deleteMonster(encounter.name, user.email)">delete</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </mat-drawer>
     <br />
     <br />
-    <div class="search-hero" style = "width: 50%; margin: auto; display: inline-block;">
-      <input class="form-control" type="text" name="search" autocomplete="off" [(ngModel)]="searchText" placeholder="&#61442;  Search Monster">
+    <div class="search-hero" style="width: 50%; margin: auto; display: inline-block;">
+      <input class="form-control" type="text" name="search" autocomplete="off" [(ngModel)]="searchText"
+        placeholder="&#61442;  Search Monster">
     </div>
     <br />
     <br />
@@ -33,18 +59,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let monsters of webService.monster_list | filter:searchText" [routerLink]="['/monsters/', monsters.name]"
-            style="cursor: pointer">
-            <th scope="row">{{ monsters.name }}</th>
-            <td>
+          <tr *ngFor="let monsters of webService.monster_list | filter:searchText | paginate: {itemsPerPage: 20, currentPage: page};" style="cursor: pointer">
+            <th scope="row" [routerLink]="['/monsters/', monsters.name]">{{ monsters.name }}</th>
+            <td [routerLink]="['/monsters/', monsters.name]">
               {{ monsters.challenge_rating }}
             </td>
-            <td>{{ monsters.type }}</td>
-            <td>{{ monsters.alignment }}</td>
-            <td>{{ monsters.source }}</td>
+            <td [routerLink]="['/monsters/', monsters.name]">{{ monsters.type }}</td>
+            <td [routerLink]="['/monsters/', monsters.name]">{{ monsters.alignment }}</td>
+            <td [routerLink]="['/monsters/', monsters.name]">{{ monsters.source }}</td>
             <td>
               <button *ngIf="authService.user$ | async as user
-              else loggedOut" class="material-symbols-outlined">add_circle</button>
+              else loggedOut" class="material-symbols-outlined"
+                (click)="addToEncounter(user.email, monsters.name)">add_circle</button>
               <ng-template #loggedOut>
 
               </ng-template>
@@ -55,17 +81,8 @@
 
       <!-- col -->
       <div class="row">
-        <div class="col-sm-6">
-          <button class="buttonPrevious" role="button" (click)="previousPage()">
-            Previous
-          </button>
-        </div>
-        <div class="col-sm-6 text-end">
-          <button class="buttonNext" role="button" (click)="nextPage()">
-            Next
-          </button>
-        </div>
-      </div>
+        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="page = $event" style="text-align: center; width:100%"> </pagination-controls>
+      </div> 
     </div>
   </mat-drawer-container>
 </div>
