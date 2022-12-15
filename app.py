@@ -49,9 +49,48 @@ def show_all_monsters():
 
     return make_response(jsonify(data_to_return), 200)
 
+@app.route("/api/v1.0/sort/<string:column>A", methods=["GET"])
+def showMonstersSortedAZ(column):
+    page_num, page_size = 1, 1000
+    if request.args.get('pn'):
+        page_num = int(request.args.get('pn'))
+    if request.args.get('ps'):
+        page_size = int(request.args.get('ps'))
+    page_start = (page_size * (page_num - 1))
+    data_to_return = []
+    for monster in dndMonsters.find().skip(page_start).limit(page_size).sort(column, 1):
+        monster['_id'] = str(monster['_id'])
+        data_to_return.append(monster)
+
+    return make_response(jsonify(data_to_return), 200)
+
+@app.route("/api/v1.0/sort/<string:column>Z", methods=["GET"])
+def showMonstersSortedZA(column):
+    page_num, page_size = 1, 1000
+    if request.args.get('pn'):
+        page_num = int(request.args.get('pn'))
+    if request.args.get('ps'):
+        page_size = int(request.args.get('ps'))
+    page_start = (page_size * (page_num - 1))
+    data_to_return = []
+    for monster in dndMonsters.find().skip(page_start).limit(page_size).sort(column, -1):
+        monster['_id'] = str(monster['_id'])
+        data_to_return.append(monster)
+
+    return make_response(jsonify(data_to_return), 200)
+
 #Show all encounters
 @app.route("/api/v1.0/allEncounters/<string:email>", methods=["GET"])
 def show_all_encounters(email):
+    encounter = dndUsers.find_one({"email": email})
+    if encounter is not None:
+        encounter["_id"] = str(encounter["_id"])
+        return make_response(jsonify(encounter), 200)
+    else:
+        return make_response(jsonify({"error": "Invalid Monster ID"}), 404)
+        #Show all encounters
+@app.route("/api/v1.0/userMonsters<string:email>", methods=["GET"])
+def show_usersMonsters(email):
     print("in here")
     encounter = dndUsers.find_one({"email": email})
     if encounter is not None:
@@ -63,9 +102,15 @@ def show_all_encounters(email):
 @app.route("/api/v1.0/monsters/<string:name>", methods=["GET"])
 def show_one_monster(name):
     monster = dndMonsters.find_one({"name": name})
+    print(monster)
     if monster is not None:
         monster["_id"] = str(monster["name"])
-        return make_response(jsonify(monster), 200)
+        return make_response(jsonify(monster), 200)#
+    monster = dndUsers.find_one( {"monstersCreated.name": name})
+    if monster is not None:
+        print(monster["monstersCreated"])
+        monster["_id"] = str(monster["monstersCreated"])
+        return make_response(jsonify(monster), 200)#
     else:
         return make_response(jsonify({"error": "Invalid Monster ID"}), 404)
 
@@ -77,15 +122,6 @@ def show_one_monster_internal(name):
         return monster
     else:
         return null
-# Search for monster via CR
-@app.route("/api/v1.0/monsterscr/<string:usrChallengeRating>", methods=["GET"])
-def show_monster_challenge_rating(usrChallengeRating):
-    data_to_return = []
-    intCr = int(usrChallengeRating)
-    for monster in dndMonsters.find({"challenge_rating": intCr}, {"_id": 1, "name": 1, "challenge_rating": 1}):
-        data_to_return.append(monster)
-    return make_response(jsonify(data_to_return), 200)
-
 
 @app.route("/api/v1.0/monsters/<string:name>/actions", methods=["GET"])
 def fetch_all_actions(name):
@@ -95,11 +131,19 @@ def fetch_all_actions(name):
         monsters["name"] = str(monsters["actions"]["name"][0])
         monsters["desc"] = str(monsters["actions"]["desc"][0])
         data_to_return.append(monsters)
-    return make_response(jsonify(data_to_return), 200)
+        return make_response(jsonify(monster), 200)#
+    monster = dndUsers.find_one( {"name": name}, {"actions": 1})
+    if monster is not None:
+        monsters["name"] = str(monsters["actions"]["name"][0])
+        monsters["desc"] = str(monsters["actions"]["desc"][0])
+        data_to_return.append(monsters)
+        return make_response(jsonify(monster), 200)
+    else:
+        return make_response(jsonify(data_to_return), 200)
 
 
-@app.route("/api/v1.0/monsters/create", methods=["POST"])
-def add_monster():
+@app.route("/api/v1.0/monsters/create<string:email>", methods=["POST"])
+def add_monster(email):
     if "name" in request.form:
         new_monster = {
             "name": request.form["name"],
@@ -139,7 +183,9 @@ def add_monster():
                                    "desc": [request.form["legendary_actions_desc"], request.form["legendary_actions_desc2"], request.form["legendary_actions_desc3"]]}
         }
 
-        new_monster_id = dndMonsters.insert_one(new_monster)
+        new_monster_id = dndUsers.update_one({"email": email}, {
+                          "$push": {"monstersCreated": new_monster}})
+
         new_monster_link = "http://localhost:5000/api/v1.0/monsters/" + \
             str(request.form["name"])
         return make_response(jsonify("New Monster Added"), 201)
@@ -148,73 +194,57 @@ def add_monster():
             {"error": "Missing form data"}), 404)
 
 
-@app.route("/api/v1.0/monsters/<string:name>/edit", methods=["PUT"])
-def edit_monster(name):
+@app.route("/api/v1.0/monster/<string:name>/<string:email>/edit", methods=["PUT"])
+def edit_monster(name, email):
+    print("Inside Python")
     if "name" in request.form:
-        result = dndMonsters.update_one({"name": name}, {
-            "$set": {
-                "index": reqest.form["name"].lower(),
-                     "name": request.form["name"],
-                     "size": request.form["size"],
-                     "type": request.form["type"],
-                     "subtype": request.form["subtype"],
-                     "alignment": request.form["alignment"],
-                     "armor_class": request.form["armor_class"],
-                     "hit_points": request.form["hit_points"],
-                     "hit_dice": request.form["hit_dice"],
-                     "speed": request.form["speed"],
+        result = dndUsers.update_one({"email": email , "monstersCreated.name" : name}, {
+            "$set":{"monstersCreated.$" :{
+                    "name": request.form["name"],
+                    "size": request.form["size"],
+                    "type": request.form["type"],
+                    "subtype": request.form["subtype"],
+                    "alignment": request.form["alignment"],
+                    "armor_class": request.form["armor_class"],
+                    "hit_points": request.form["hit_points"],
+                    "hit_dice": request.form["hit_dice"],
 
-                     "strength": request.form["strength"],
-                     "dexterity": request.form["dexterity"],
-                     "constitution": request.form["constitution"],
-                     "intelligence": request.form["intelligence"],
-                     "wisdom": request.form["wisdom"],
-                     "charisma": request.form["charisma"],
+                    "strength": request.form["strength"],
+                    "dexterity": request.form["dexterity"],
+                    "constitution": request.form["constitution"],
+                    "intelligence": request.form["intelligence"],
+                    "wisdom": request.form["wisdom"],
+                    "charisma": request.form["charisma"],
 
-                     "damage_vunerabilities": request.form["damage_vinerabilities"],
-                     "damage_resistances": request.form["damage_resistances"],
-                     "damage_immunities": request.form["damage_immunities"],
-                     "condition_immunities": request.form["condition_immunities"],
+                    "damage_vunerabilities": request.form["damage_vinerabilities"],
+                    "damage_resistances": request.form["damage_resistances"],
+                    "damage_immunities": request.form["damage_immunities"],
+                    "condition_immunities": request.form["condition_immunities"],
 
-                     "Passive_Perception": request.form["Passive_Perception"],
-                     "DarkVison": request.form["DarkVison"],
-                     "Truesight": request.form["Truesight"],
-                     "Tremorsense": request.form["Tremorsense"],
-                     "Blindsight": request.form["Blindsight"],
-                     "languages": request.form["languages"],
-                     "challenge_rating": request.form["challenge_rating"],
+                    "languages": request.form["languages"],
+                    "challenge_rating": request.form["challenge_rating"],
 
-                     "special_abilities_name": request.form["special_abilities_name"],
-                     "special_abilities_desc": request.form["special_abilities_desc"],
-
-                     "actions_name": request.form["actions_name"],
-                     "actions_desc": request.form["actions_desc"],
-
-                     "legendary_actions": [{"name": request.form["legendary_actions_name"], "name": request.form["legendary_actions_name2"], "name": request.form["legendary_actions_name3"],
-                                            "desc": request.form["legendary_actions_desc"], "desc": request.form["legendary_actions_desc2"], "desc": request.form["legendary_actions_desc3"]}]
-                     }
+                     }}
         })
         if result.matched_count == 1:
-            edited_monster_link = "http://localhost:5000/api/v1.0/monster/" + id
             return make_response(jsonify(
-                {edited_monster_link}), 200)
+                {"error": "Success"}), 201)
         else:
             return make_response(jsonify(
-                {"error": "Invalid business ID"}), 404)
+                {"error": "Invalid Monster ID"}), 404)
     else:
         return make_response(jsonify(
             {"error": "Missing form data"}), 404)
 
 
 @app.route("/api/v1.0/monster/delete/<string:name>/<string:email>", methods=["DELETE"])
-def delete_(name, email):
-    print("in Python")
+def delete(name, email):
     result = dndUsers.update_one({ "email": email},{"$pull" : { "encounters" : {"name": name } } } )
     if result is not None:
         return make_response(jsonify({}), 204)
     else:
         return make_response(jsonify(
-            {"error": "Invalid business ID"}), 404)
+            {"error": "Invalid Monster ID"}), 404)
 
 
 @app.route("/api/v1.0/monster/<string:email>/<string:name>", methods=["GET"])
@@ -224,41 +254,6 @@ def addMonsterToEncounter(email, name):
                           "$push": {"encounters": monsterObject}})
 
     return make_response(jsonify("Monster Added", 200))
-
-
-@app.route("/api/v1.0/businesses/<bid>/reviews/<rid>", methods=["GET"])
-def fetch_one_review(bid, rid):
-    business = businesses.find_one(
-        {"reviews._id": ObjectId(rid)},
-        {"_id": 0, "reviews.$": 1})
-    if business is None:
-        return make_response(
-            jsonify(
-                {"error": "Invalid business ID or review ID"}), 404)
-    business['reviews'][0]['_id'] = \
-        str(business['reviews'][0]['_id'])
-
-    return make_response(jsonify(
-        business['reviews'][0]), 200)
-
-
-@app.route("/api/v1.0/businesses/<bid>/reviews/<rid>",
-           methods=["PUT"])
-def edit_review(bid, rid):
-    edited_review = {
-        "reviews.$.username": request.form["username"],
-        "reviews.$.comment": request.form["comment"],
-        "reviews.$.stars": request.form['stars']
-    }
-    businesses.update_one(
-        {"reviews._id": ObjectId(rid)},
-        {"$set": edited_review})
-    edit_review_url = \
-        "http://localhost:5000/api/v1.0/businesses/" + \
-        bid + "/reviews/" + rid
-    return make_response(jsonify(
-        {"url": edit_review_url}), 200)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
