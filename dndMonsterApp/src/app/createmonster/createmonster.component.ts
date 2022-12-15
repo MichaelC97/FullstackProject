@@ -22,7 +22,6 @@ export class CreatemonsterComponent implements OnInit {
             name: ['',Validators.required],
             size: ['',Validators.required],
             type: ['',Validators.required],
-            subtype: ['',Validators.required],
             alignment: ['',Validators.required],
             armor_class: ['',Validators.required],
             hit_points: ['',Validators.required],
@@ -77,11 +76,10 @@ export class CreatemonsterComponent implements OnInit {
   }
 
   isUntouched(){
+
     return this.monsterForm.controls.name.pristine ||
            this.monsterForm.controls.size.pristine ||
            this.monsterForm.controls.type.pristine ||
-           this.monsterForm.controls.subtype.pristine ||
-           this.monsterForm.controls.alignment.pristine ||
            this.monsterForm.controls.armor_class.pristine ||
            this.monsterForm.controls.hit_points.pristine ||
 
@@ -103,7 +101,6 @@ export class CreatemonsterComponent implements OnInit {
     return this.isInvalid('name') ||
     this.isInvalid('size') ||
     this.isInvalid('type') ||
-    this.isInvalid('subtype') ||
     this.isInvalid('alignment') ||
     this.isInvalid('armor_class') ||
     this.isInvalid('hit_points') ||

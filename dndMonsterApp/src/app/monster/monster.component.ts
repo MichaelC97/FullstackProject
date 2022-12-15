@@ -19,6 +19,7 @@ searchText: any;
   }
   showFiller = false;
   monster_list: any;
+  encounter_list: any;
   page: number = 1;
   
   constructor(
@@ -32,22 +33,36 @@ searchText: any;
     if (sessionStorage['page']) {
       this.page = Number(sessionStorage['page']);
     }
-    this.webService.getMonster(this.page);
+    this.webService.getMonster();
 
   }
 
-  previousPage() {
-    if (this.page > 1) {
-      this.page = this.page - 1;
-      sessionStorage['page'] = this.page;
-      this.monster_list = this.webService.getMonster(this.page);
-    }
-  }
+  // previousPage() {
+  //   if (this.page > 1) {
+  //     this.page = this.page - 1;
+  //     sessionStorage['page'] = this.page;
+  //     this.monster_list = this.webService.getMonster();
+  //   }
+  // }
 
-  nextPage() {
-    this.page = this.page + 1;
-    sessionStorage['page'] = this.page;
-    this.monster_list = this.webService.getMonster(this.page);
+  // nextPage() {
+  //   this.page = this.page + 1;
+  //   sessionStorage['page'] = this.page;
+  //   this.monster_list = this.webService.getMonster();
     
+  // }
+  addToEncounter(userEmail: any, monsterName: any){
+      console.log("monster component")
+      this.webService.addToEncounter(userEmail, monsterName)
+      console.log("get all encounters Start")
+      this.webService.getAllEncounters(userEmail);
+  }
+  showAllEncounters(userEmail : any){
+      this.webService.getAllEncounters(userEmail);
+  }
+
+  deleteMonster(name : any, userEmail : any){
+    this.webService.deleteMonster(name, userEmail);
+    this.showAllEncounters(userEmail);
   }
 }
