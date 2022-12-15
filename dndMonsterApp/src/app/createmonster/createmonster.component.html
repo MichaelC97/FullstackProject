@@ -1,7 +1,7 @@
 <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700" rel="stylesheet" type="text/css" />
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic" rel="stylesheet"
   type="text/css" />
-<div class="container" style="margin-top:70px;">
+  <div class="container" style="margin-top:70px;" *ngIf="authService.isAuthenticated$ | async; else loggedOut">
   <br />
   <br />
   <br />
@@ -228,11 +228,14 @@
     <!-- col -->
     <div class="row">
       <div class="col-sm-6">
-        <button class="button-89" role="button" routerLink="['/monsters/']"> Back </button>
+        <button class="button-89" role="button" routerLink="/monsters"> Back </button>
       </div>
       <div class="col-sm-6 text-end">
-        <button *ngIf = "!isIncomplete()" class="button-89" role="button" (click)="createMonster()">Create Monster</button>
+        <button *ngIf= "authService.user$ | async as user; or !isIncomplete()" class="button-89" role="button" (click)="createMonster(user.email)">Create Monster</button>
       </div>
     </div>
   </form>
 </div>
+<ng-template #loggedOut >
+  <h5 style = "text-align: center; padding: 20%">Please Log In To View This Page!</h5>
+</ng-template>

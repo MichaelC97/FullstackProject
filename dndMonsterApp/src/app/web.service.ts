@@ -7,6 +7,7 @@ export class WebService {
     monsters_found: any;
     actions_found: any; 
     encounter_list: any;
+  userMonsers: any;
 
   constructor(public http: HttpClient) {}
   getMonster() {
@@ -22,9 +23,11 @@ export class WebService {
       .get('http://localhost:5000/api/v1.0/monsters/' + monstername)
       .subscribe((Response: any) => {
         this.monsters_found = Response;
+        this.monsters_found = Response.monstersCreated[0];
+        console.log(this.monsters_found);
       });
   }
-  
+
   getMonsterActions(monstername: any ){
     return this.http.get(
       'http://localhost:5000/api/v1.0/monsters/' + monstername + '/actions')
@@ -41,7 +44,7 @@ export class WebService {
       });
   }
 
-  submitMonster(monsterForm : any){
+  submitMonster(userEmail : any, monsterForm : any){
     let postData = new FormData();
     postData.append("name", monsterForm.name);
     postData.append("size", monsterForm.size);
@@ -93,11 +96,11 @@ export class WebService {
     postData.append("legendary_actions_desc3", monsterForm.legendary_actions_desc3);
 
 
-    return this.http.post('http://localhost:5000/api/v1.0/monsters/create', postData);
+    return this.http.post('http://localhost:5000/api/v1.0/monsters/create'+ userEmail, postData);
 
   }
 
-  editMonster(monsterForm : any, monsterName : any){
+  editMonster(monsterForm : any, monsterName : any, userEmail : any){
     let postData = new FormData();
     postData.append("name", monsterForm.name + " Edited");
     postData.append("size", monsterForm.size);
@@ -148,11 +151,12 @@ export class WebService {
     postData.append("legendary_actions_desc2", monsterForm.legendary_actions_desc2);
     postData.append("legendary_actions_desc3", monsterForm.legendary_actions_desc3);
 
-    return this.http.post('/api/v1.0/monsters/' + monsterName + '/edit', postData);
+    console.log("Made it into here")
+    return this.http.put('http://localhost:5000/api/v1.0/monster/'+ monsterName + '/' + userEmail + '/edit', postData);
   }
   
   addToEncounter(userEmail : any, monsterName : any){
-    console.log("Made it into here")
+    
     return this.http.get(
       'http://localhost:5000/api/v1.0/monster/' + userEmail + '/' + monsterName)
       .subscribe((Response: any) => {
@@ -165,9 +169,33 @@ export class WebService {
     return this.http
       .get('http://localhost:5000/api/v1.0/allEncounters/' + userEmail)
       .subscribe((Response: any) => {
-        // console.log(Response)
         this.encounter_list = Response.encounters;
       });
   }
+  getUserMonsters(userEmail : any) {
+    console.log("inside userMonsters")
+    return this.http
+      .get('http://localhost:5000/api/v1.0/userMonsters' + userEmail)
+      .subscribe((Response: any) => {
+        this.monster_list = Response.monstersCreated;
+      });
+
+  }
+
+
+  sortAZ(columnToSort : any ){
+    return this.http
+    .get('http://localhost:5000/api/v1.0/sort/' + columnToSort + 'A')
+    .subscribe((Response: any) => {
+      this.monster_list = Response;
+    });
+}
+sortZA(columnToSort : any ){
+  return this.http
+  .get('http://localhost:5000/api/v1.0/sort/' + columnToSort + 'Z')
+  .subscribe((Response: any) => {
+    this.monster_list = Response;
+  });
+}
 
 }

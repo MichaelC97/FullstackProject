@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WebService } from '../web.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-createmonster',
@@ -13,7 +14,7 @@ export class CreatemonsterComponent implements OnInit {
   monsterForm : any;
   newMonster : any;
 
-  constructor(public webService: WebService, private router: Router, public http: HttpClient, private route : ActivatedRoute, private formBuilder: FormBuilder) { }
+  constructor(public webService: WebService, private router: Router, public http: HttpClient, private route : ActivatedRoute, private formBuilder: FormBuilder, public authService : AuthService) { }
 
   ngOnInit(): void {
 
@@ -121,8 +122,8 @@ export class CreatemonsterComponent implements OnInit {
     this.isUntouched()
 
   }
-  createMonster() {
-    this.webService.submitMonster(this.monsterForm.value)
+  createMonster(userEmail : any) {
+    this.webService.submitMonster(userEmail ,this.monsterForm.value)
       .subscribe((Response: any) => {
         this.monsterForm.reset();
         this.router.navigate([Response]);

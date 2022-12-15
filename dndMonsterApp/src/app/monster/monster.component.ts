@@ -13,7 +13,8 @@ import { AuthService } from '@auth0/auth0-angular';
   styleUrls: ['./monster.component.css'],
 })
 export class MonsterComponent implements OnInit {
-searchText: any;
+
+  searchText: any;
   applyFilter($event: KeyboardEvent) {
     throw new Error('Method not implemented.');
   }
@@ -34,27 +35,17 @@ searchText: any;
       this.page = Number(sessionStorage['page']);
     }
     this.webService.getMonster();
-
+  
   }
 
-  // previousPage() {
-  //   if (this.page > 1) {
-  //     this.page = this.page - 1;
-  //     sessionStorage['page'] = this.page;
-  //     this.monster_list = this.webService.getMonster();
-  //   }
-  // }
-
-  // nextPage() {
-  //   this.page = this.page + 1;
-  //   sessionStorage['page'] = this.page;
-  //   this.monster_list = this.webService.getMonster();
-    
-  // }
+  showAllMonsters(){
+    this.webService.getMonster();
+  }
   addToEncounter(userEmail: any, monsterName: any){
       console.log("monster component")
       this.webService.addToEncounter(userEmail, monsterName)
       console.log("get all encounters Start")
+      console.log(userEmail)
       this.webService.getAllEncounters(userEmail);
   }
   showAllEncounters(userEmail : any){
@@ -63,6 +54,16 @@ searchText: any;
 
   deleteMonster(name : any, userEmail : any){
     this.webService.deleteMonster(name, userEmail);
-    this.showAllEncounters(userEmail);
+    
+  }
+  sortAZ(columnToStort : any){
+    this.webService.sortAZ(columnToStort);
+  }
+  sortZA(columnToStort : any){
+   this.webService.sortZA(columnToStort);
+  }
+
+  getUserMonsters(userEmail : any){
+    this.webService.getUserMonsters(userEmail);
   }
 }

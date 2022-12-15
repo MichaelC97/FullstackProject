@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WebService } from '../web.service';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-edit-monster',
@@ -14,7 +15,7 @@ export class EditMonsterComponent implements OnInit {
   monsters_found : any;
   actions_found: any = [];
 
-  constructor(public webService: WebService, private router: Router, public http: HttpClient, private route : ActivatedRoute, private formBuilder: FormBuilder) { }
+  constructor(public webService: WebService, private router: Router, public http: HttpClient, private route : ActivatedRoute, private formBuilder: FormBuilder, public authService : AuthService) { }
 
   ngOnInit(): void {
 
@@ -22,8 +23,6 @@ export class EditMonsterComponent implements OnInit {
     this.monsters_found = this.webService.getOneMonster(this.route.snapshot.params['name']);
     console.log("getOneMonster ")
     this.webService.getMonsterActions(this.route.snapshot.params['name']);
-
-    (<HTMLInputElement>document.getElementById("monName")).value = this.monsters_found.name;
 
     this.monsterForm = this.formBuilder.group({
 
@@ -131,11 +130,10 @@ isIncomplete(){
   this.isUntouched()
 
 }
-  editMonster(monsterName : any) {
-    this.webService.editMonster(this.monsterForm.value, monsterName)
+  editMonster(monsterName : any, userEmail : any) {
+    this.webService.editMonster(this.monsterForm.value, monsterName, userEmail)
       .subscribe((Response: any) => {
         this.monsterForm.reset();
-        this.router.navigate([Response]);
       });
   }
 

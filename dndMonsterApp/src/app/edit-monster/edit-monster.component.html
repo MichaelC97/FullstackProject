@@ -1,7 +1,7 @@
 <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700" rel="stylesheet" type="text/css" />
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic" rel="stylesheet"
   type="text/css" />
-<div class="container" style="margin-top:70px;">
+<div class="container" style="margin-top:70px;" *ngIf="authService.isAuthenticated$ | async; else loggedOut">
   <br />
   <br />
   <br />
@@ -189,40 +189,7 @@
           <!-- property block -->
         </div>
         <!-- actions -->
-        <div class="actions">
-          <h3>Legendary Actions</h3>
-          <div class="property-block">
-            <div class = "form-group">
-            <h4><input class="form-control" formControlName="legendary_actions_name" type="text" id="MonLegA" name="MonLegA" placeholder="{{webService.monsters_found.legendaryActions.name[0]}}"></h4>
-            </div>
-            <div class = "form-group">
-            <p><input class="form-control" formControlName="legendary_actions_desc" type="text" id="MonLegADesc" name="MonLegADesc" placeholder="{{webService.monsters_found.legendaryActions.description[0]}}"></p>
-            </div>
-            <br />
-            <br />
-            <div class = "form-group">
-              <h4><input class="form-control" formControlName="legendary_actions_name2" type="text" id="MonLegA2" name="MonLegA2" placeholder="{{webService.monsters_found.legendaryActions.name[1]}}"></h4>
-              </div>
-              <div class = "form-group">
-              <p><input class="form-control" formControlName="legendary_actions_desc2" type="text" id="MonLegADesc2" name="MonLegADesc2" placeholder="{{webService.monsters_found.legendaryActions.description[1]}}"></p>
-              </div>
-            <br />
-            <br />
-            <div class = "form-group">
-              <h4><input class="form-control" formControlName="legendary_actions_name3" type="text" id="MonLegA3" name="MonLegA3" placeholder="{{webService.monsters_found.legendaryActions.name[2]}}"></h4>
-              </div>
-              <div class = "form-group">
-              <p><input class="form-control" formControlName="legendary_actions_desc3" type="text" id="MonLegADesc3" name="MonLegADesc3" placeholder="{{webService.monsters_found.legendaryActions.description[2]}}"></p>
-              </div>
-          </div>
-          <br>
-          <br>
-          <div class = "form-group">
-            <h4><input class="form-control" formControlName="userEmail" type="text" id="userEmail" name="userEmail" placeholder="Enter Your Email Address"></h4>
-            </div>
-          <!-- property block -->
-          <!-- property block -->
-        </div>
+
         <!-- actions -->
       </div>
       <!-- section right -->
@@ -233,11 +200,14 @@
     <!-- col -->
     <div class="row">
       <div class="col-sm-6">
-        <button class="button-89" role="button" routerLink="['/monsters/']"> Back </button>
+        <button class="button-89" role="button" routerLink="/monsters/"> Back </button>
       </div>
       <div class="col-sm-6 text-end">
-        <button *ngIf = "!isIncomplete()" class="button-89" role="button" (click)="editMonster(webService.monsters_found.name)">Edit Monster</button>
+        <button *ngIf= "authService.user$ | async as user" class="button-89" role="button" (click)="editMonster(webService.monsters_found.name, user.email)">Edit Monster</button>
       </div>
     </div>
   </form>
 </div>
+<ng-template #loggedOut >
+  <h5 style = "text-align: center; padding: 20%">Please Log In To View This Page!</h5>
+</ng-template>

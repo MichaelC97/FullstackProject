@@ -6,7 +6,7 @@
 
   <div>
     <button *ngIf="authService.user$ | async as user"  type="button" class = "mat-button" (click)="drawer.toggle()"
-    (click)="showAllEncounters(user.email)">
+    (click)="showAllEncounters(user.email)">Show Encounters
     </button>
   </div>
   <mat-drawer-container class="mat-container" >
@@ -43,6 +43,8 @@
     <div class="search-hero" style="width: 50%; margin: auto; display: inline-block;">
       <input class="form-control" type="text" name="search" autocomplete="off" [(ngModel)]="searchText"
         placeholder="&#61442;  Search Monster">
+        <button *ngIf="authService.user$ | async as user" (click) = "getUserMonsters(user.email)" >Show User Monsters</button>
+        <button *ngIf="authService.user$ | async as user" (click) = "showAllMonsters()" >Show All Monsters</button>
     </div>
     <br />
     <br />
@@ -50,16 +52,32 @@
       <table class="table table-striped">
         <thead>
           <tr class="titles">
-            <th scope="col">Name</th>
-            <th scope="col">CR</th>
-            <th scope="col">Type</th>
-            <th scope="col">Alignment</th>
-            <th scope="col">Source</th>
+            <th class="something" scope="col"><div class = "something2">Name</div> <div class = "something3"><span style="cursor: pointer" (click) = "sortAZ('name')"class="material-symbols-outlined">
+              arrow_drop_up </span><span  style="cursor: pointer" (click) = "sortZA('name')" class="material-symbols-outlined">
+                arrow_drop_down
+                </span></div></th>
+            <th scope="col">CR <div class = "something3"><span style="cursor: pointer" (click) = "sortAZ('challenge_rating')"class="material-symbols-outlined">
+              arrow_drop_up </span><span  style="cursor: pointer" (click) = "sortZA('challenge_rating')" class="material-symbols-outlined">
+                arrow_drop_down
+                </span></div></th>
+            <th scope="col">Type<div class = "something3"><span style="cursor: pointer" (click) = "sortAZ('type')"class="material-symbols-outlined">
+              arrow_drop_up </span><span  style="cursor: pointer" (click) = "sortZA('type')" class="material-symbols-outlined">
+                arrow_drop_down
+                </span></div></th>
+            <th scope="col">Alignment <div class = "something3"><span style="cursor: pointer" (click) = "sortAZ('alignment')"class="material-symbols-outlined">
+              arrow_drop_up </span><span  style="cursor: pointer" (click) = "sortZA('alignment')" class="material-symbols-outlined">
+                arrow_drop_down
+                </span></div></th>
+            <th scope="col">Source <div class = "something3"><span style="cursor: pointer" (click) = "sortAZ('source')"class="material-symbols-outlined">
+              arrow_drop_up </span><span  style="cursor: pointer" (click) = "sortZA('source')" class="material-symbols-outlined">
+                arrow_drop_down
+                </span></div></th>
             <th scope="col">Add</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let monsters of webService.monster_list | filter:searchText | paginate: {itemsPerPage: 20, currentPage: page};" style="cursor: pointer">
+            
             <th scope="row" [routerLink]="['/monsters/', monsters.name]">{{ monsters.name }}</th>
             <td [routerLink]="['/monsters/', monsters.name]">
               {{ monsters.challenge_rating }}
