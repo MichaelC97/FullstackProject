@@ -11,17 +11,20 @@ user_list = [
             "username" : "Michael",  
             "password" : b"Morrigan1",
             "email" : "mcousins59@gmail.com",
-            "admin" : True
+            "admin" : True,
+            "encounters" : [],
+            "monstersCreated" : []
           },
           { 
             "name" : "Matt Mercer",
             "username" : "Matt",  
             "password" : b"Matt",
             "email" : "Matt@mercer.com",
-            "admin" : False
-          },
+            "admin" : False,
+            "encounters" : [],
+            "monstersCreated" : []
+          }
        ]
 
 for new_user in user_list:
-      new_user["password"] = bcrypt.hashpw(new_user["password"], bcrypt.gensalt())
       dndUsers.insert_one(new_user)
