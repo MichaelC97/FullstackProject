@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WebService } from '../web.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '@auth0/auth0-angular';
 import { Location } from '@angular/common';
 
 @Component({
@@ -16,7 +17,7 @@ monsters_found : any;
 actions_found: any = [];
 items: any;
 
-  constructor(public webService: WebService, private router: Router, public http: HttpClient, private route : ActivatedRoute, private location : Location) {}
+  constructor(public webService: WebService, private router: Router, public http: HttpClient, private route : ActivatedRoute, private location : Location, public authService : AuthService) {}
 
   
   ngOnInit() {

@@ -146,7 +146,8 @@
     </div>
     <!-- section left -->
     <div class="section-right">
-      <button id = "editbtn" [routerLink]="['/monsters/', webService.monsters_found.name, 'edit']">Edit</button>
+      <button id = "editbtn" *ngIf="authService.isAuthenticated$ | async; else loggedOut" [routerLink]="['/monsters/', webService.monsters_found.name, 'edit']">Edit</button>
+      <ng-template #loggedOut></ng-template>
       <div class="actions">
         <h3>Actions</h3>
         <div class="property-block">
@@ -182,10 +183,12 @@
   <!-- col -->
   <div class="row">
     <div class="col-sm-6">
-      <button class="button-89" role="button" (click)="btnBack()">Back</button>
+      <button class="button-89"  role="button" (click)="btnBack()">Back</button>
     </div>
+    
     <div class="col-sm-6 text-end">
-      <button class="button-89" role="button" (click)="btnBack()">Add</button>
+      <button class="button-89" *ngIf="authService.isAuthenticated$ | async; else loggedOut"role="button" (click)="btnBack()">Add</button>
     </div>
+    <ng-template #loggedOut></ng-template>
   </div>
 </div>
