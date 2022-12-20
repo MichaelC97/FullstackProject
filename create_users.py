@@ -14,6 +14,7 @@ user_list = [
             "admin" : True,
             "encounters" : [],
             "monstersCreated" : []
+            
           },
           { 
             "name" : "Matt Mercer",
